@@ -115,9 +115,11 @@ void DecodeMsg(char *pcString) {
 }
 
 int main() {
-	char string[] = "reset 0x13 rak";
+	while (1){
+		char string[] = "reset 0x13 rak";
 	
-	DecodeMsg(string);
+		DecodeMsg(string);
+	}
 }
 
 

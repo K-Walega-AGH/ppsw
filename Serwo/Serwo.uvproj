@@ -417,6 +417,11 @@
               <FileType>1</FileType>
               <FilePath>.\timerinterrupts.c</FilePath>
             </File>
+            <File>
+              <FileName>serwo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\serwo.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
