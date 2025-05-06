@@ -39,11 +39,12 @@ int main (){
 	Timer0Interrupts_Init(20000,&Automat);
 	LedInit();
 	KeyBoardInit();
-
-	
-
 	while(1){
 	 	iMainLoopCtr++;
+		iMainLoopCtr++;
+		iMainLoopCtr++;
+		iMainLoopCtr++;
+		iMainLoopCtr++;
 	}
 }
 
