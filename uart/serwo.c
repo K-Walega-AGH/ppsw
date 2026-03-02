@@ -1,21 +1,13 @@
 #include "serwo.h"
 #include <LPC21xx.H>
 #include "led.h"
-#include "keyboard.h"
 #include "timerinterrupts.h"
+#include "keyboard.h"
 #define DETECTOR_bm (1<<10)
 #define OFFSET_VALUE  12
-int i;
-
-enum ServoState {CALLIB, IDLE, IN_PROGRESS, OFFSET};
-struct Servo{
-	enum ServoState eState;
-	unsigned int uiCurrentPosition;
-	unsigned int uiDesiredPosition;
-};
-
 
 struct Servo sServo;
+
 void DetectorInit(){
 	IO0DIR = IO0DIR&(~(DETECTOR_bm));
 }
@@ -32,7 +24,7 @@ enum DetectorState eReadDetector(){
 }
 
 
-void Automat(void){
+ void Automat(void){
 		switch(sServo.eState){
 			case CALLIB:
 				if(eReadDetector()==INACTIVE){
@@ -88,13 +80,14 @@ void ServoInit(unsigned int uiServoFrequency){
 	sServo.eState = CALLIB; 
 	LedInit();
 	Timer0Interrupts_Init((1000000/uiServoFrequency),&Automat); 
-		while(sServo.eState == CALLIB)
-	{
-	
-		}
+
 }
 void ServoCallib(void){
 	sServo.eState = CALLIB;
+			while(sServo.eState == CALLIB)
+	{
+	
+		}
 }
 void ServoGoTo(unsigned int uiPosition){
 	sServo.uiDesiredPosition = uiPosition;

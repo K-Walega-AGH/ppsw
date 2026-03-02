@@ -4,7 +4,7 @@
 #define MAX_KEYWORD_STRING_LTH 10
 #define MAX_KEYWORD_NR 3
 
-typedef enum KeywordCode {LD, ST, RST} KeywordCode;
+
 enum CompResult { DIFFERENT , EQUAL };
 enum CompResult eCompareString(char pcStr1[], char pcStr2[]);
 enum Result eHexStringToUInt(char pcStr[],unsigned int *puiValue);
@@ -12,6 +12,8 @@ void ReplaceCharactersInString(char pcString[],char cOldChar,char cNewChar);
 
 
 enum Result {OK,ERROR};
+
+typedef enum KeywordCode {LD, ST, RST} KeywordCode;
 
 typedef union TokenValue {
 	enum KeywordCode eKeyword;
@@ -23,7 +25,7 @@ typedef enum TokenType {KEYWORD, NUMBER, STRING} TokenType;
 
 typedef struct Token {
 	enum TokenType eType;
-	union TokenValue uValue;
+	union TokenValue uValue; 
 } Token;
 
 typedef struct Keyword {
@@ -98,7 +100,7 @@ void DecodeTokens(void) {
 	
 	for(ucTokenCounter = 0; ucTokenCounter < ucTokenNr; ucTokenCounter++) {
 		psCurrentToken = &asToken[ucTokenCounter];
-		if(eStringToKeyword(psCurrentToken -> uValue.pcString, &psCurrentToken -> uValue.eKeyword) == OK) {
+		if(eStringToKeyword(psCurrentToken -> uValue.pcString, &psCurrentToken -> uValue.eKeyword) == OK) { //&psCurrentToken -> uValue.eKeyword tu masz przekazanie wartosci adresu do wnetrza funkcji i w funkcji wew przez wszkaznik przypisujesz mu wartosc
 			psCurrentToken -> eType = KEYWORD;
 		} else if(eHexStringToUInt(psCurrentToken -> uValue.pcString, &psCurrentToken -> uValue.uiNumber) == OK) {
 			psCurrentToken -> eType = NUMBER;
@@ -116,7 +118,7 @@ void DecodeMsg(char *pcString) {
 
 int main() {
 	while (1){
-		char string[] = "reset 0x13 rak";
+		char string[] = "reset 0x2A string";
 	
 		DecodeMsg(string);
 	}

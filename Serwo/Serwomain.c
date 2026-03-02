@@ -5,6 +5,9 @@
 int main (){
 	KeyBoardInit();
 	ServoInit(50);
+	ServoGoTo(24);
+	ServoGoTo(12);
+
 	while(1){
 	 	if(eKeyboardRead()==BUTTON_0){
 			ServoCallib();
