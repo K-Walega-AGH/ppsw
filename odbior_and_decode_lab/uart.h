@@ -1,4 +1,4 @@
-#define RECIEVER_SIZE 4  
+#define RECIEVER_SIZE 6
 #define TERMINATOR '\0'
 
 enum eRecieverStatus {EMPTY, READY, OVERFLOW};

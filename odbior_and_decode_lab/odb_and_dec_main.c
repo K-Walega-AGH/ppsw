@@ -2,70 +2,28 @@
 #include "serwo.h"
 #include "led.h"
 #include "keyboard.h"
-
-extern struct RecieverBuffer sRecieverBuffer;
+#include "strings.h"
 
 
 int main (){
-	extern char cOdebranyZnak;
-//		LedInit();
-//	UART_InitWithInt(9600);
-//		ServoInit(50);
+	char acHelpArray[6];
+	LedInit();
+	UART_InitWithInt(9600);
+	ServoInit(50);
 		
-	Reciever_PutCharacterToBuffer ('k');
-	Reciever_PutCharacterToBuffer ('o');
-	Reciever_PutCharacterToBuffer ('d');
-	Reciever_PutCharacterToBuffer (TERMINATOR);
-	Reciever_PutCharacterToBuffer ('k');
-	Reciever_PutCharacterToBuffer ('o');
-	Reciever_PutCharacterToBuffer ('d');
-	Reciever_PutCharacterToBuffer ('1');
-	Reciever_PutCharacterToBuffer (TERMINATOR);
-	
-		/*
- while (1)
-    {
-		
-        switch (cOdebranyZnak)
-        {
-            case '1':	
-							ServoGoTo(12*ucInfiniteGoTo);
-							cOdebranyZnak = '2';
-							ucInfiniteGoTo++;
-            break;
-            case '2':
-            break;
-            case '3':
-            break;
-            case '4':
-                break;
-            case 'c':
-							ServoCallib();
-						ucInfiniteGoTo =1;
-            break;
-            default:
-            break;
-        }
-				
-		switch(eKeyboardRead())
-		{
-			case BUTTON_0:
+ while (1){
+	if(eReciever_GetStatus() == READY){
+			Reciever_GetStringCopy(acHelpArray);
+		  if(eCompareString(acHelpArray,"calib") == EQUAL){
 				ServoCallib();
-				break;
-			case BUTTON_1:
-				ServoGoTo(12);
-				break;
-			case BUTTON_2:
-				ServoGoTo(24);
-				break;
-			case BUTTON_3:
-				ServoGoTo(36);
-				break;
-			case RELASED:
-				break;
-		}
-    
+			}
+			else if (eCompareString(acHelpArray,"left") == EQUAL){
+				ServoGoTo(50);
+			}
+			else if (eCompareString(acHelpArray,"right") == EQUAL){
+				ServoGoTo(150);
+			}
+		} 
 	}
-	 */ 
 }
 

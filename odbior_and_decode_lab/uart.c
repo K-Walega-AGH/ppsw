@@ -1,6 +1,8 @@
 #include <LPC210X.H>
 #include "uart.h"
 #include "strings.h"
+
+void Reciever_PutCharacterToBuffer(char cCharacter);
 /************ UART ************/
 // U0LCR Line Control Register
 #define mDIVISOR_LATCH_ACCES_BIT                   0x00000080
@@ -41,7 +43,7 @@ __irq void UART0_Interrupt (void) {
 
    if      ((uiCopyOfU0IIR & mINTERRUPT_PENDING_IDETIFICATION_BITFIELD) == mRX_DATA_AVALIABLE_INTERRUPT_PENDING) // odebrano znak
    {
-      cOdebranyZnak = U0RBR;
+      Reciever_PutCharacterToBuffer(U0RBR);
    } 
    
    if ((uiCopyOfU0IIR & mINTERRUPT_PENDING_IDETIFICATION_BITFIELD) == mTHRE_INTERRUPT_PENDING)              // wyslano znak - nadajnik pusty 
@@ -78,7 +80,9 @@ void Reciever_PutCharacterToBuffer(char cCharacter) {
             sRecieverBuffer.eStatus = READY;
 						sRecieverBuffer.ucCharCtr = 0;
         } else {
-            sRecieverBuffer.eStatus = OVERFLOW;  
+            sRecieverBuffer.eStatus = OVERFLOW;
+						sRecieverBuffer.ucCharCtr = 0;
+					
         }
     } else {
         if (sRecieverBuffer.ucCharCtr < RECIEVER_SIZE - 1) {
@@ -86,6 +90,7 @@ void Reciever_PutCharacterToBuffer(char cCharacter) {
             sRecieverBuffer.ucCharCtr++;
         } else {
             sRecieverBuffer.eStatus = OVERFLOW;
+						sRecieverBuffer.ucCharCtr = 0;
         }
     }
 }
