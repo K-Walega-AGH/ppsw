@@ -423,11 +423,6 @@
               <FilePath>.\uart.c</FilePath>
             </File>
             <File>
-              <FileName>odb_and_dec_main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\odb_and_dec_main.c</FilePath>
-            </File>
-            <File>
               <FileName>strings.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\strings.c</FilePath>
@@ -436,6 +431,11 @@
               <FileName>decode.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\decode.c</FilePath>
+            </File>
+            <File>
+              <FileName>wys_lan_zn_main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\wys_lan_zn_main.c</FilePath>
             </File>
           </Files>
         </Group>
