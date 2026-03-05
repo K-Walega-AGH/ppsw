@@ -12,10 +12,8 @@ unsigned char ucStartChar = 0;
 
 
 int main (){
-	LedInit();
 	UART_InitWithInt(9600);
-	ServoInit(50);
-	U0THR = ucStartChar;
+	Transmiter_SendString("test123");
 		
 	while (1){
 	}

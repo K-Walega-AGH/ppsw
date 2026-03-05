@@ -26,7 +26,8 @@
 #define mIRQ_SLOT_ENABLE                           0x00000020
 
 //PINDEL0 Pin Function Select Register 0
-#define PIN_SET_TO_RX_FOR_UART0 4
+#define PIN_SET_TO_RX_FOR_UART0 0x00000004
+#define PIN_SET_TO_TX_FOR_UART0 0x00000001
 
 
 /************ ODBIOR ************/
@@ -39,7 +40,6 @@ char cOdebranyZnak;
 /************ WYSYLKA ************/
 struct TransmiterBuffer sTransmiterBuffer;
 char Transmiter_GetCharacterFromBuffer(void);
-extern unsigned char ucStartChar;
 
 ///////////////////////////////////////////
 __irq void UART0_Interrupt (void) {
@@ -54,8 +54,9 @@ __irq void UART0_Interrupt (void) {
    
    if ((uiCopyOfU0IIR & mINTERRUPT_PENDING_IDETIFICATION_BITFIELD) == mTHRE_INTERRUPT_PENDING)              // wyslano znak - nadajnik pusty 
    {
-			ucStartChar++;
-		  U0THR = ucStartChar;
+     if (sTransmiterBuffer.eStatus == BUSY){
+			 U0THR = Transmiter_GetCharacterFromBuffer();
+		 }
    }
 
    VICVectAddr = 0; // Acknowledge Interrupt
@@ -65,7 +66,7 @@ __irq void UART0_Interrupt (void) {
 void UART_InitWithInt(unsigned int uiBaudRate){
 
    // UART0
-   PINSEL0 = PINSEL0 | PIN_SET_TO_RX_FOR_UART0;                 // ustawic pina na odbiornik uart0
+   PINSEL0 = PINSEL0 | PIN_SET_TO_RX_FOR_UART0 | PIN_SET_TO_TX_FOR_UART0;                 // ustawic pina na odbiornik uart0
    U0LCR  |= m8BIT_UART_WORD_LENGTH | mDIVISOR_LATCH_ACCES_BIT; // dlugosc slowa, DLAB = 1
    U0DLL   = ((15000000)/16)/uiBaudRate;                      // predkosc transmisji
    U0LCR  &= (~mDIVISOR_LATCH_ACCES_BIT);                       // DLAB = 0
