@@ -13,9 +13,12 @@ unsigned char ucStartChar = 0;
 
 int main (){
 	UART_InitWithInt(9600);
-	Transmiter_SendString("test123");
+
 		
 	while (1){
+		if(sTransmiterBuffer.eStatus == FREE){
+			Transmiter_SendString("test123\n");
+		}
 	}
 }
 
