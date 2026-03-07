@@ -1,6 +1,5 @@
-//git test
-#define NULL 0
 
+#include "konwersje.h"
 
 enum Result {OK, ERROR};
 

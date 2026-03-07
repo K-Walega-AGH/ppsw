@@ -1,5 +1,6 @@
 #include "decode.h"
 #include "strings.h"
+#include "konwersje.h"
 
 
 
@@ -101,53 +102,6 @@ void DecodeMsg(char *pcString) {
 
 
 
-
-
-
-
-enum Result eHexStringToUInt(char pcStr[],unsigned int *puiValue)
-{
-		unsigned char ucLicznikZnakoWTablicy;
-		unsigned char ucZnakWTablicy;
-		unsigned char ucLiczba;
-		*puiValue = 0;
-	
-	
-	
-		if((pcStr[0]!='0') || (pcStr[1]!='x') || (pcStr[2]==NULL))
-		{
-			return ERROR;
-		}
-		
-		for ( ucLicznikZnakoWTablicy = 2; pcStr[ucLicznikZnakoWTablicy]!=NULL; ucLicznikZnakoWTablicy++)
-		{
-				ucZnakWTablicy = pcStr[ucLicznikZnakoWTablicy];
-			
-				if(ucLicznikZnakoWTablicy > 6)
-				{
-						return ERROR;
-				}
-				
-				*puiValue = *puiValue << 4;
-			
-				if ((pcStr[ucLicznikZnakoWTablicy] >= '0') && (pcStr[ucLicznikZnakoWTablicy] <= '9'))
-				{
-							ucLiczba = ucZnakWTablicy - '0';
-				}
-				else if ((pcStr[ucLicznikZnakoWTablicy] >= 'A') && (pcStr[ucLicznikZnakoWTablicy] <= 'F'))
-				{
-							ucLiczba = ucZnakWTablicy - 'A' + 10;
-				}
-				else 
-				{
-					return ERROR;
-				}
-				
-				*puiValue = *puiValue | ucLiczba; 
-		}
-			
-		return OK;
-}
 
 
 

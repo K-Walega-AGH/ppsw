@@ -437,6 +437,11 @@
               <FileType>1</FileType>
               <FilePath>.\wys_lan_zn_main.c</FilePath>
             </File>
+            <File>
+              <FileName>konwersje.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\konwersje.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

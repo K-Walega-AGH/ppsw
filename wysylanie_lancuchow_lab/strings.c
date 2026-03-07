@@ -42,17 +42,23 @@ enum CompResult eCompareString(char pcStr1[], char pcStr2[])
 
 
 
-void AppendString (char pcSourceStr[],char pcDestinationStr[])
+void AppendString(char pcSourceStr[], char pcDestinationStr[])
 {
-	unsigned char ucLicznikDrugi;
-	
-	unsigned char ucLicznikDlaWarunkuSourca = 0;
-	
-		for	(ucLicznikDrugi = 9; pcSourceStr[ucLicznikDlaWarunkuSourca] != NULL; ucLicznikDrugi++,ucLicznikDlaWarunkuSourca++)
-			{
-				pcDestinationStr[ucLicznikDrugi] = pcSourceStr[ucLicznikDlaWarunkuSourca];
-			}
-	pcDestinationStr[ucLicznikDrugi] = NULL;
+    unsigned char ucLicznikDrugi = 0;
+    unsigned char ucLicznikDlaWarunkuSourca = 0;
+
+    while (pcDestinationStr[ucLicznikDrugi] != '\0')
+    {
+        ucLicznikDrugi++;
+    }
+
+    for (; pcSourceStr[ucLicznikDlaWarunkuSourca] != '\0'; 
+         ucLicznikDrugi++, ucLicznikDlaWarunkuSourca++)
+    {
+        pcDestinationStr[ucLicznikDrugi] = pcSourceStr[ucLicznikDlaWarunkuSourca];
+    }
+
+    pcDestinationStr[ucLicznikDrugi] = '\0';
 }
 
 
