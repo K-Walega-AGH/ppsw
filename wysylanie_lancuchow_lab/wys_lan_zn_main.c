@@ -27,43 +27,79 @@ void WatchUpdate(){
 
 }
 
-char cHexKeeper[36];
-char cTemp[12];
+
+char acReciveBuffer[16];
+char acMessageBuffer[36];
+char acHexKeeper[12];
+char acCalcKeeper[12];
+
+char fCalcValueChanged;
+
 
 int main (){
 	UART_InitWithInt(9600);
 	Timer0Interrupts_Init(1000000,WatchUpdate);
 		
 while (1){
-    if(sTransmiterBuffer.eStatus == FREE){
+		if(eReciever_GetStatus() == READY){
+			Reciever_GetStringCopy(acReciveBuffer);
+			DecodeMsg(acReciveBuffer);
+			if(ucTokenNr > 0) {
+					switch(asToken[0].uValue.eKeyword) {
+						case CL:
 
-        if(sWatch.fSeccondsValueChanged){
+						  fCalcValueChanged = 1;
+							break;
+						default:
+							break;
+					}
+				}
+		} 
 
-            cHexKeeper[0] = '\0';   
+		if(sTransmiterBuffer.eStatus == FREE){
 
-            sWatch.fSeccondsValueChanged = 0;
 
-            AppendString("sec: ", cHexKeeper);
+				if(fCalcValueChanged){
 
-            UIntToHexStr(sWatch.ucSecconds, cTemp);
-            AppendString(cTemp, cHexKeeper);
+						fCalcValueChanged = 0;
 
-            if(sWatch.fMinutesValueChanged){
+						acMessageBuffer[0] = '\0';
 
-                sWatch.fMinutesValueChanged = 0;
+						AppendString("calc ", acMessageBuffer);
+						UIntToHexStr((asToken[1].uValue.uiNumber * 2), acCalcKeeper);
+						AppendString(acCalcKeeper, acMessageBuffer);
+						AppendString("\n", acMessageBuffer);
 
-                AppendString(" min: ", cHexKeeper);
+						Transmiter_SendString(acMessageBuffer);
+				}
 
-                UIntToHexStr(sWatch.ucMinutes, cTemp);
-                AppendString(cTemp, cHexKeeper);
-            }
+				else if(sWatch.fSeccondsValueChanged){
 
-            AppendString("\n", cHexKeeper);
+						acMessageBuffer[0] = '\0';
 
-            Transmiter_SendString(cHexKeeper);
-        }
-    }
+						sWatch.fSeccondsValueChanged = 0;
+
+						AppendString("sec: ", acMessageBuffer);
+
+						UIntToHexStr(sWatch.ucSecconds, acHexKeeper);
+						AppendString(acHexKeeper, acMessageBuffer);
+
+						if(sWatch.fMinutesValueChanged){
+
+								sWatch.fMinutesValueChanged = 0;
+
+								AppendString(" min: ", acMessageBuffer);
+
+								UIntToHexStr(sWatch.ucMinutes, acHexKeeper);
+								AppendString(acHexKeeper, acMessageBuffer);
+						}
+
+						AppendString("\n", acMessageBuffer);
+
+						Transmiter_SendString(acMessageBuffer);
+				}
 }
+	}
 }
 
 

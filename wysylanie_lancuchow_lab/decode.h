@@ -4,12 +4,12 @@
 #define NULL '\0'
 #define MAX_TOKEN_NR 3
 #define MAX_KEYWORD_STRING_LTH 10
-#define MAX_KEYWORD_NR 2
+#define MAX_KEYWORD_NR 1
 
 
 
 typedef enum TokenType {KEYWORD, NUMBER, STRING} TokenType;
-typedef enum KeywordCode {CB,	GT} KeywordCode;
+typedef enum KeywordCode {CL} KeywordCode;
 
 typedef union TokenValue {
 	enum KeywordCode eKeyword;

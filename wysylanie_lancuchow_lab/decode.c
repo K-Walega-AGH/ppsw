@@ -10,8 +10,7 @@ enum Result eHexStringToUInt(char pcStr[],unsigned int *puiValue);
 enum Result {OK,ERROR};
 
 struct Keyword asKeywordList[MAX_KEYWORD_NR] = {
-	{CB, "callib"},
-	{GT, "goto"}
+	{CL, "calc"}
 };
 unsigned char ucTokenNr;
 struct Token asToken[MAX_TOKEN_NR];
