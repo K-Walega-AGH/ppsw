@@ -1,5 +1,5 @@
 #define RECIEVER_SIZE 16
-#define TRANSMITER_SIZE 32
+#define TRANSMITER_SIZE 36
 #define TERMINATOR '\r'
 
 
