@@ -54,7 +54,7 @@ __irq void UART0_Interrupt (void) {
    
    if ((uiCopyOfU0IIR & mINTERRUPT_PENDING_IDETIFICATION_BITFIELD) == mTHRE_INTERRUPT_PENDING)              // wyslano znak - nadajnik pusty 
    {
-     if (sTransmiterBuffer.eStatus == BUSY){
+     if (Transmiter_GetStatus()){
 			 U0THR = Transmiter_GetCharacterFromBuffer();
 		 }
    }
@@ -73,8 +73,8 @@ void UART_InitWithInt(unsigned int uiBaudRate){
    U0IER  |= mRX_DATA_AVALIABLE_INTERRUPT_ENABLE | mTHRE_INTERRUPT_ENABLE ;               // wlaczamy(umozliwiamy) przerwanie typu RBR(Receive Data Avaible)
 
    // INT
-   VICVectAddr0  = (unsigned long) UART0_Interrupt;             // set interrupt service routine address
-   VICVectCntl0  = mIRQ_SLOT_ENABLE | VIC_UART0_CHANNEL_NR;     // use it for UART 0 Interrupt
+   VICVectAddr2  = (unsigned long) UART0_Interrupt;             // set interrupt service routine address
+   VICVectCntl2  = mIRQ_SLOT_ENABLE | VIC_UART0_CHANNEL_NR;     // use it for UART 0 Interrupt
    VICIntEnable |= (0x1 << VIC_UART0_CHANNEL_NR);               // Enable UART 0 Interrupt Channel
 	}
 
@@ -82,26 +82,22 @@ void UART_InitWithInt(unsigned int uiBaudRate){
 
 void Reciever_PutCharacterToBuffer(char cCharacter) {
 
-    if (cCharacter == TERMINATOR) { 
-        if (sRecieverBuffer.ucCharCtr < RECIEVER_SIZE) {
-            sRecieverBuffer.cData[sRecieverBuffer.ucCharCtr] = '\0';  
+   
+        if (sRecieverBuffer.ucCharCtr == RECIEVER_SIZE ) {
+						sRecieverBuffer.eStatus = OVERFLOW;
+						sRecieverBuffer.ucCharCtr = 0;
+						
+        } 			
+        else if (cCharacter == TERMINATOR) {
+					  sRecieverBuffer.cData[sRecieverBuffer.ucCharCtr] = '\0';  
             sRecieverBuffer.eStatus = READY;
 						sRecieverBuffer.ucCharCtr = 0;
-        } else {
-            sRecieverBuffer.eStatus = OVERFLOW;
-						sRecieverBuffer.ucCharCtr = 0;
-					
         }
-    } else {
-        if (sRecieverBuffer.ucCharCtr < RECIEVER_SIZE - 1) {
-            sRecieverBuffer.cData[sRecieverBuffer.ucCharCtr] = cCharacter;
+				else {
+					  sRecieverBuffer.cData[sRecieverBuffer.ucCharCtr] = cCharacter;
             sRecieverBuffer.ucCharCtr++;
-        } else {
-            sRecieverBuffer.eStatus = OVERFLOW;
-						sRecieverBuffer.ucCharCtr = 0;
         }
-    }
-}
+			}
 
 
 enum eRecieverStatus eReciever_GetStatus(void) {

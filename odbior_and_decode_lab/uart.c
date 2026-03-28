@@ -74,26 +74,22 @@ void UART_InitWithInt(unsigned int uiBaudRate){
 
 void Reciever_PutCharacterToBuffer(char cCharacter) {
 
-    if (cCharacter == TERMINATOR) { 
-        if (sRecieverBuffer.ucCharCtr < RECIEVER_SIZE) {
-            sRecieverBuffer.cData[sRecieverBuffer.ucCharCtr] = '\0';  
+   
+        if (sRecieverBuffer.ucCharCtr == RECIEVER_SIZE ) {
+						sRecieverBuffer.eStatus = OVERFLOW;
+						sRecieverBuffer.ucCharCtr = 0;
+						
+        } 			
+        else if (cCharacter == TERMINATOR) {
+					  sRecieverBuffer.cData[sRecieverBuffer.ucCharCtr] = '\0';  
             sRecieverBuffer.eStatus = READY;
 						sRecieverBuffer.ucCharCtr = 0;
-        } else {
-            sRecieverBuffer.eStatus = OVERFLOW;
-						sRecieverBuffer.ucCharCtr = 0;
-					
         }
-    } else {
-        if (sRecieverBuffer.ucCharCtr < RECIEVER_SIZE - 1) {
-            sRecieverBuffer.cData[sRecieverBuffer.ucCharCtr] = cCharacter;
+				else {
+					  sRecieverBuffer.cData[sRecieverBuffer.ucCharCtr] = cCharacter;
             sRecieverBuffer.ucCharCtr++;
-        } else {
-            sRecieverBuffer.eStatus = OVERFLOW;
-						sRecieverBuffer.ucCharCtr = 0;
         }
-    }
-}
+			}
 
 
 enum eRecieverStatus eReciever_GetStatus(void) {
