@@ -69,8 +69,13 @@ while (1){
 						case CB:
 							ServoCallib();
 							break;
-						case GT:
-							ServoGoTo(asToken[1].uValue.uiNumber);
+					  case GT:
+							if(ucTokenNr > 1) {
+									ServoGoTo(asToken[1].uValue.uiNumber);
+							} 
+							else {
+									fWrongCommand = 1;
+							}
 							break;
 						case HP:
 							fHelp = 1;
@@ -89,8 +94,7 @@ while (1){
 
 						fCalcValueChanged = 0;
 
-						acMessageBuffer[0] = '\0';
-						AppendString(GREEN, acMessageBuffer);
+						CopyString(GREEN, acMessageBuffer);
 						AppendString("calc ", acMessageBuffer);
 						UIntToHexStr((asToken[1].uValue.uiNumber * 2), acCalcKeeper);
 						AppendString(acCalcKeeper, acMessageBuffer);
@@ -102,11 +106,10 @@ while (1){
 
 				else if(sWatch.fSeccondsValueChanged){
 
-						acMessageBuffer[0] = '\0';
 
 						sWatch.fSeccondsValueChanged = 0;
 
-						AppendString("sec: ", acMessageBuffer);
+						CopyString("sec: ", acMessageBuffer);
 
 						UIntToHexStr(sWatch.ucSecconds, acHexKeeper);
 						AppendString(acHexKeeper, acMessageBuffer);
@@ -116,10 +119,9 @@ while (1){
 				
 				else if(sWatch.fMinutesValueChanged){
 								
-								acMessageBuffer[0] = '\0';
 								sWatch.fMinutesValueChanged = 0;
 
-								AppendString("min: ", acMessageBuffer);
+								CopyString("min: ", acMessageBuffer);
 
 								UIntToHexStr(sWatch.ucMinutes, acHexKeeper);
 								AppendString(acHexKeeper, acMessageBuffer);
@@ -128,9 +130,8 @@ while (1){
 				}
 				
 				else if(fWrongCommand == 1){
-					acMessageBuffer[0] = '\0';
 					fWrongCommand = 0;
-					AppendString(RED, acMessageBuffer);
+					CopyString(RED, acMessageBuffer);
 					AppendString("Wrong command. Try --help", acMessageBuffer);		
 					AppendString(RESET, acMessageBuffer);
 					AppendString("\n", acMessageBuffer);
@@ -138,9 +139,8 @@ while (1){
 				}
 
 				else if(fHelp == 1){
-					acMessageBuffer[0] = '\0';
 					fHelp = 0;
-					AppendString(YELLOW, acMessageBuffer);
+					CopyString(YELLOW, acMessageBuffer);
 					AppendString("list of commands: goto,calc,callib", acMessageBuffer);		
 					AppendString(RESET, acMessageBuffer);
 					AppendString("\n", acMessageBuffer);
